@@ -1,4 +1,5 @@
 import streamlit as st
+import plotly.graph_objects as go
 import random
 
 # 🎨 페이지 설정
@@ -61,7 +62,7 @@ else:
         user_mbti = mbti
         st.success(f"당신의 추정 MBTI는 **{mbti}**입니다!")
 
-# 결과 출력
+# 🚀 결과 출력
 if user_mbti:
     st.markdown("---")
     st.markdown(f"### 🧭 {user_mbti} 유형에 추천되는 직업은?")
@@ -69,6 +70,36 @@ if user_mbti:
     for job in jobs:
         st.markdown(f"- {job}")
     st.markdown("💡 *추천은 참고용입니다. 진로는 여러분의 열정과 선택이 가장 중요해요!*")
+
+    # 🌈 성향 시각화
+    def get_mbti_traits(mbti):
+        return {
+            "사교성": 80 if mbti[0] == "E" else 20,
+            "직관력": 80 if mbti[1] == "N" else 20,
+            "감성적 판단": 80 if mbti[2] == "F" else 20,
+            "계획성": 80 if mbti[3] == "J" else 20
+        }
+
+    st.markdown("### 📊 MBTI 성향 레이더 차트")
+    traits = get_mbti_traits(user_mbti)
+    labels = list(traits.keys())
+    values = list(traits.values())
+
+    fig = go.Figure(data=go.Scatterpolar(
+        r=values + [values[0]],  # 닫힌 도형을 위해 첫 값 반복
+        theta=labels + [labels[0]],
+        fill='toself',
+        name='MBTI 성향'
+    ))
+
+    fig.update_layout(
+        polar=dict(
+            radialaxis=dict(visible=True, range=[0, 100])
+        ),
+        showlegend=False
+    )
+
+    st.plotly_chart(fig)
 
 # 푸터
 st.markdown("---")
