@@ -1,16 +1,14 @@
 import streamlit as st
 import pandas as pd
-from xhtml2pdf import pisa
 from io import BytesIO
-import base64
 
-# Streamlit 설정
+# 페이지 설정
 st.set_page_config(page_title="MBTI 진로 상담 도우미", layout="centered")
 
 st.title("🧭 MBTI 기반 고등학생 진로 상담 도우미")
 st.write("MBTI 유형에 따라 추천 직업과 전공, 활동을 안내해드립니다.")
 
-# 16개 MBTI 유형 데이터
+# 데이터 정의
 data = {
     'MBTI': [
         'ISTJ', 'ISFJ', 'INFJ', 'INTJ',
@@ -43,49 +41,38 @@ data = {
         '리더십 캠프, 군사체험', '교육봉사, 협업 활동', '토론, 사회 참여 프로그램', '모의 법정, 토론대회'
     ]
 }
-
-# 데이터프레임 생성
 df = pd.DataFrame(data)
 
-# 사용자 MBTI 선택
+# 사용자 선택
 selected_mbti = st.selectbox("당신의 MBTI를 선택하세요:", df['MBTI'])
 
 if selected_mbti:
     result = df[df['MBTI'] == selected_mbti].iloc[0]
-    
+
     st.subheader("📌 MBTI 진로 정보")
     st.markdown(f"**성격 특성:** {result['성격특성']}")
     st.markdown(f"**추천 직업:** {result['추천직업']}")
     st.markdown(f"**관련 전공:** {result['관련전공']}")
     st.markdown(f"**추천 활동:** {result['추천활동']}")
 
-    # HTML 텍스트 생성
-    html = f"""
-    <html>
-    <head><meta charset="utf-8"></head>
-    <body>
-        <h2>MBTI 진로 상담 결과</h2>
-        <p><strong>MBTI 유형:</strong> {selected_mbti}</p>
-        <p><strong>성격 특성:</strong> {result['성격특성']}</p>
-        <p><strong>추천 직업:</strong> {result['추천직업']}</p>
-        <p><strong>관련 전공:</strong> {result['관련전공']}</p>
-        <p><strong>추천 활동:</strong> {result['추천활동']}</p>
-    </body>
-    </html>
-    """
+    # 텍스트 결과 만들기
+    text_result = f"""MBTI 진로 상담 결과
 
-    # PDF 생성 함수
-    def convert_html_to_pdf(source_html):
-        pdf_buffer = BytesIO()
-        pisa_status = pisa.CreatePDF(source_html, dest=pdf_buffer, encoding='utf-8')
-        if not pisa_status.err:
-            return pdf_buffer.getvalue()
-        return None
+MBTI 유형: {selected_mbti}
+성격 특성: {result['성격특성']}
+추천 직업: {result['추천직업']}
+관련 전공: {result['관련전공']}
+추천 활동: {result['추천활동']}
+"""
 
-    pdf = convert_html_to_pdf(html)
+    # txt 파일로 변환 및 다운로드
+    txt_bytes = BytesIO()
+    txt_bytes.write(text_result.encode('utf-8'))
+    txt_bytes.seek(0)
 
-    if pdf:
-        b64 = base64.b64encode(pdf).decode()
-        href = f'<a href="data:application/octet-stream;base64,{b64}" download="mbti_result.pdf">📄 결과 PDF 다운로드</a>'
-        st.markdown(href, unsafe_allow_html=True)
-
+    st.download_button(
+        label="📄 결과 TXT 파일 다운로드",
+        data=txt_bytes,
+        file_name=f"mbti_result_{selected_mbti}.txt",
+        mime="text/plain"
+    )
