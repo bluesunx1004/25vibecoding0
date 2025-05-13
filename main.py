@@ -1,5 +1,16 @@
 import streamlit as st
 import matplotlib.pyplot as plt
+# 간단한 bar_chart 대체 예시
+import pandas as pd
+
+if stats:
+    st.markdown("#### 📊 직업 관련 통계")
+    df = pd.DataFrame({
+        '항목': ['인기도 (%)', '평균 연봉 (만원)'],
+        '값': [stats["인기도"], stats["평균연봉"]]
+    })
+    df.set_index('항목', inplace=True)
+    st.bar_chart(df)
 
 # 페이지 설정
 st.set_page_config(
