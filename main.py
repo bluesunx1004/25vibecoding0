@@ -115,22 +115,24 @@ else:
     q3 = st.radio("3️⃣ 결정할 때 논리보다는 감정을 더 고려한다", ["예", "아니오"])
     q4 = st.radio("4️⃣ 계획적으로 행동하는 걸 좋아한다", ["예", "아니오"])
 
-    if st.button("📌 MBTI 추정하기"):
-        mbti = ""
-        mbti += "E" if q1 == "예" else "I"
-        mbti += "N" if q2 == "예" else "S"
-        mbti += "F" if q3 == "예" else "T"
-        mbti += "J" if q4 == "예" else "P"
-        user_mbti = mbti
-        st.success(f"당신의 추정 MBTI는 **{mbti}**입니다!")
+   if st.button("📌 MBTI 추정하기"):
+    mbti = ""
+    mbti += "E" if q1 == "예" else "I"
+    mbti += "N" if q2 == "예" else "S"
+    mbti += "F" if q3 == "예" else "T"
+    mbti += "J" if q4 == "예" else "P"
+    user_mbti = mbti
+    st.success(f"당신의 추정 MBTI는 **{mbti}**입니다!")
 
-st.markdown(
-    """
-    🧪 **더 정밀한 MBTI 검사를 원하시나요?**  
-    [👉 정식 MBTI 검사 받기 (16Personalities)](https://www.16personalities.com/ko)
-    """,
-    unsafe_allow_html=True
-)
+    st.markdown(
+        """
+        🧪 **더 정밀한 MBTI 검사를 원하시나요?**  
+        [👉 정식 MBTI 검사 받기 (16Personalities)](https://www.16personalities.com/ko)
+        """,
+        unsafe_allow_html=True
+    )
+
+
 # 결과 출력
 if user_mbti:
     st.markdown("---")
