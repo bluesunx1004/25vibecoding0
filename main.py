@@ -68,4 +68,4 @@ if mbti:
 
 # 🎁 푸터
 st.markdown("---")
-st.markdown("<h5 style='text-align: center;'>Made with ❤️ by YourName</h5>", unsafe_allow_html=True)
+st.markdown("<h5 style='text-align: center;'>Made with ❤️ by YUN</h5>", unsafe_allow_html=True)
