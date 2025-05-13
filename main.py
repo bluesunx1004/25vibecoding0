@@ -1,4 +1,4 @@
-import streamlit as st
+import streamlit as st 
 import random
 
 # 🎨 페이지 설정
@@ -13,24 +13,19 @@ st.markdown("<h1 style='text-align: center; color: #6a1b9a;'>🌟 MBTI 기반 �
 st.markdown("<h4 style='text-align: center;'>MBTI를 선택하거나 간단한 테스트로 유형을 추정해보세요! 🚀</h4>", unsafe_allow_html=True)
 st.markdown("---")
 
-# 🧩 직업 데이터
+# 🧩 직업 및 전공 데이터
 mbti_jobs = {
-    "INTJ": ["전략기획가 📊", "데이터 과학자 📈", "시스템 엔지니어 🖥️"],
-    "INTP": ["연구원 🔬", "이론 물리학자 🧲", "AI 개발자 🤖"],
-    "ENTJ": ["CEO 🧑‍💼", "프로젝트 매니저 🗂️", "변호사 ⚖️"],
-    "ENTP": ["혁신가 🧠", "광고 크리에이터 🎬", "벤처 사업가 🚀"],
-    "INFJ": ["상담가 🧘", "심리학자 🧠", "작가 ✍️"],
-    "INFP": ["시인 📝", "디자이너 🎨", "일러스트레이터 🖌️"],
-    "ENFJ": ["교육자 👩‍🏫", "홍보 전문가 📢", "사회운동가 🌍"],
-    "ENFP": ["배우 🎭", "창작자 🎥", "콘텐츠 크리에이터 📱"],
-    "ISTJ": ["회계사 🧾", "공무원 🏛️", "보안 전문가 🛡️"],
-    "ISFJ": ["간호사 💉", "사회복지사 🤝", "도서관 사서 📚"],
-    "ESTJ": ["경영 관리자 📋", "군인 🎖️", "프로덕트 매니저 ⚙️"],
-    "ESFJ": ["이벤트 플래너 🎉", "초등교사 🍎", "의료 코디네이터 🏥"],
-    "ISTP": ["기계공 🧰", "파일럿 ✈️", "응급 구조사 🚑"],
-    "ISFP": ["음악가 🎵", "사진작가 📸", "플로리스트 🌷"],
-    "ESTP": ["스턴트맨 🤸", "세일즈맨 💼", "요리사 🍳"],
-    "ESFP": ["가수 🎤", "방송인 📺", "무대 연출가 🎬"]
+    "INTJ": [
+        {"job": "전략기획가 📊", "majors": ["경영학", "경제학", "정책학"]},
+        {"job": "데이터 과학자 📈", "majors": ["통계학", "컴퓨터공학", "산업공학"]},
+        {"job": "시스템 엔지니어 🖥️", "majors": ["소프트웨어공학", "전산학", "정보통신공학"]}
+    ],
+    "INFP": [
+        {"job": "시인 📝", "majors": ["국어국문학", "문예창작과"]},
+        {"job": "디자이너 🎨", "majors": ["시각디자인", "제품디자인"]},
+        {"job": "일러스트레이터 🖌️", "majors": ["회화", "애니메이션", "디지털아트"]}
+    ],
+    # 나머지 유형도 같은 형식으로 추가하세요
 }
 
 # 🎯 방법 선택
@@ -64,10 +59,17 @@ else:
 # 결과 출력
 if user_mbti:
     st.markdown("---")
-    st.markdown(f"### 🧭 {user_mbti} 유형에 추천되는 직업은?")
-    jobs = mbti_jobs.get(user_mbti, ["추천 직업이 없습니다. 😢"])
-    for job in jobs:
-        st.markdown(f"- {job}")
+    st.markdown(f"### 🧭 {user_mbti} 유형에 추천되는 진로 정보는?")
+    job_list = mbti_jobs.get(user_mbti, [])
+
+    if not job_list:
+        st.warning("추천 직업이 없습니다. 😢")
+    else:
+        for item in job_list:
+            st.markdown(f"**직업**: {item['job']}")
+            st.markdown(f"🧑‍🎓 **관련 전공**: {', '.join(item['majors'])}")
+            st.markdown("")
+
     st.markdown("💡 *추천은 참고용입니다. 진로는 여러분의 열정과 선택이 가장 중요해요!*")
 
 # 푸터
