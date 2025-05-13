@@ -1,5 +1,4 @@
 import streamlit as st
-import io
 
 # MBTI 정보
 mbti_info = {
@@ -85,7 +84,7 @@ if mbti:
         for line in info["example"]:
             st.markdown(line)
 
-    # 다운로드 버튼
+    # 다운로드 버튼 - 문자열을 직접 전달
     output_text = f"{info['title']}\n\n📌 성격 특징:\n{info['description']}\n\n"
     output_text += "🛠️ 상담 팁:\n" + "\n".join(info['tips']) + "\n\n"
     output_text += "🎯 추천 진로/직업:\n" + "\n".join(info['career']) + "\n\n"
@@ -94,7 +93,7 @@ if mbti:
 
     st.download_button(
         label="📥 MBTI 상담 정보 다운로드",
-        data=io.StringIO(output_text),
+        data=output_text,  # <-- 수정된 부분: StringIO 제거
         file_name=f"{mbti}_상담정보.txt",
         mime="text/plain"
     )
