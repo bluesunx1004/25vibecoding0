@@ -4,7 +4,12 @@ import pdfkit
 import base64
 import tempfile
 import os
+from xhtml2pdf import pisa
 
+def convert_html_to_pdf(source_html, output_filename):
+    with open(output_filename, "w+b") as result_file:
+        pisa_status = pisa.CreatePDF(source_html, dest=result_file)
+    return pisa_status.err
 # 🎨 페이지 설정
 st.set_page_config(
     page_title="MBTI 진로 추천기 💼✨",
